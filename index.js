@@ -46,3 +46,42 @@ app.get('/lista', (req, res) =>{
         }
     })
 })
+
+app.get('/lista/id', (req, res) =>{
+
+    const {id} = req.params
+
+    const consulta =`SELECT * FROM cursoandroid.usr WHERE id_usr=${id};`
+    conexion.query(consulta, (error,resultado) => {
+        if(error){return console.error(error.message)}
+
+        const obj = {}
+
+        if(resultado.length > 0){
+           console.log("Individuo encontrado")
+           res.json(resultado)
+        }
+        else{
+            res.json('No hay nada que mostrar')
+        }
+    })
+})
+
+app.post('/lista/agregar'), (req, res) => {
+    const usuario = {
+        nombre: req.body.nom,
+        apellido: req.body.ape,
+        correo: req.body.emai
+    }
+
+    const consulta = `INSERT INTO cursoandroid.usr (nombre,apellido,correo)`
+
+    conexion.query(consulta,[
+        usuario.nombre,
+        usuario.apellido,
+        usuario.correo], (error) => {
+            if(error) return console.error(error.message)
+            res.json('Cliente agregado a la lista')
+        }
+    )
+}
